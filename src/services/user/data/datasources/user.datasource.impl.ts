@@ -7,7 +7,6 @@ export class UserDatasourceImpl implements UserDatasource {
 
   async create(name: string, email: string): Promise<number> {
     // Make the request to the database and create the user
-
     try {
       throw new UserException("Database error");
 
@@ -25,7 +24,7 @@ export class UserDatasourceImpl implements UserDatasource {
     // Make the request to the database and read the user
 
     return Promise.resolve(
-      UserModel.fromString(
+      UserModel.fromJSON(
         JSON.stringify({
           id: 1,
           name: "John Doe",

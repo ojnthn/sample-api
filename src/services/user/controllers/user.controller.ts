@@ -11,7 +11,7 @@ export class UserController {
   ) {}
 
   async createUser(req: Request, res: Response) {
-    const user = UserModel.fromString(JSON.stringify(req.body));
+    const user = UserModel.fromJSON(JSON.stringify(req.body));
     const response = await this.create.execute(user.name, user.email);
 
     if (response instanceof Failure) {
