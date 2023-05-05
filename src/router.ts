@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { userController } from "./core/inject/inject";
+import { pokemonController, userController } from "./core/inject/inject";
 
 const route = Router();
 
@@ -14,5 +14,10 @@ route.post("/user", (req, res) => {
 route.get("/user/:id", (req, res) => {
   return userController.readUser(req, res);
 });
+
+route.get("/pokemon/:id", (req, res) => {
+  return pokemonController.readPokemon(req, res);
+});
+
 
 export { route };

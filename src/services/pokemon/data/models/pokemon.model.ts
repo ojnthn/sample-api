@@ -18,7 +18,7 @@ export class PokemonModel extends PokemonEntity {
       name,
       sprites.front_default,
       types.map((type: any) =>
-        PokemonTypeModel.fromJSON(JSON.stringify(type.type))
+        PokemonTypeModel.fromJSON(JSON.stringify(type))
       )
     );
   }
