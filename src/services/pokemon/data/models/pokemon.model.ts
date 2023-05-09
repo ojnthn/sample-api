@@ -12,8 +12,9 @@ export class PokemonModel extends PokemonEntity {
   }
 
   // Conversão de JSON para Objeto
-  static fromJSON(stringedJSON: string) {
-    // Conversão de string para JSON
+  static fromJSON(stringedJSON: any) {
+    // Conversão de string para JSON (object para JSON???? Vai dar ruim)
+
     const json = JSON.parse(stringedJSON);
 
     const id: number = json.id;

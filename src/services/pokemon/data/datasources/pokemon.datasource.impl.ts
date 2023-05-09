@@ -1,3 +1,4 @@
+import { PokmemonException } from "../../errors/pokemon.exception";
 import { PokemonModel } from "../models/pokemon.model";
 import { PokemonDatasource } from "./pokemon.datasource";
 
@@ -9,9 +10,11 @@ export class PokemonDatasourceImpl implements PokemonDatasource {
 
       return Promise.resolve(PokemonModel.fromJSON(pokemone));
     } catch (error) {
-      // Precisa criar uma classe de erro generica e então executar o throw
-      // Exemplo em: /src/services/user/data/datasources/user.datasource.impl.ts
-      return Promise.reject(error);
+      if (error instanceof PokmemonException) {
+        throw new PokmemonException(error.message);
+      }
+
+      throw new PokmemonException("Error getting pokemon");
     }
   }
 }
