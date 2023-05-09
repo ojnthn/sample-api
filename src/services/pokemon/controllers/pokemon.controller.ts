@@ -1,12 +1,10 @@
 import { ReadPokemonUsecase } from "../domain/usecases/read_pokemon/read_pokemon.usecase";
-import {Request, Response} from "express"
+import { Request, Response } from "express";
 
-export class PokemonController{
-  constructor(
-    private read: ReadPokemonUsecase
-  ){}
+export class PokemonController {
+  constructor(private read: ReadPokemonUsecase) {}
 
-  async readPokemon(req: Request, res: Response){
+  async readPokemon(req: Request, res: Response) {
     const pokemonId = req.params.id;
     const pokemon = await this.read.execute(pokemonId);
 

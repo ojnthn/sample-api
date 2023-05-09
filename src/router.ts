@@ -19,5 +19,4 @@ route.get("/pokemon/:id", (req, res) => {
   return pokemonController.readPokemon(req, res);
 });
 
-
 export { route };
