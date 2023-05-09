@@ -11,15 +11,23 @@ export class PokemonModel extends PokemonEntity {
     super(id, name, sprite, types);
   }
 
-  static fromJSON(json: string) {
-    const { id, name, sprites, types } = JSON.parse(json);
-    return new PokemonModel(
-      id,
-      name,
-      sprites.front_default,
-      types.map((type: any) =>
-        PokemonTypeModel.fromJSON(JSON.stringify(type))
-      )
+  // Conversão de JSON para Objeto
+  static fromJSON(stringedJSON: string) {
+    // Conversão de string para JSON
+    const json = JSON.parse(stringedJSON);
+
+    const id: number = json.id;
+    const name: string = json.forms[0].name;
+    const sprites: {
+      front_default: string;
+    } = {
+      front_default: json.sprites.front_default,
+    };
+
+    const types: PokemonTypeModel[] = json.types.map((type: any) =>
+      PokemonTypeModel.fromJSON(JSON.stringify(type))
     );
+
+    return new PokemonModel(id, name, sprites.front_default, types);
   }
 }
