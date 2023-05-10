@@ -1,4 +1,3 @@
-import e from "express";
 import { PokemonTypeEntity } from "../../domain/entities/pokemon_type.entity";
 
 export class PokemonTypeModel extends PokemonTypeEntity {

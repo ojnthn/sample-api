@@ -12,11 +12,7 @@ export class PokemonModel extends PokemonEntity {
   }
 
   // Conversão de JSON para Objeto
-  static fromJSON(stringedJSON: any) {
-    // Conversão de string para JSON (object para JSON???? Vai dar ruim)
-
-    const json = JSON.parse(stringedJSON);
-
+  static fromJSON(json: any) {
     const id: number = json.id;
     const name: string = json.forms[0].name;
     const sprites: {
@@ -25,9 +21,11 @@ export class PokemonModel extends PokemonEntity {
       front_default: json.sprites.front_default,
     };
 
-    const types: PokemonTypeModel[] = json.types.map((type: any) =>
-      PokemonTypeModel.fromJSON(JSON.stringify(type))
-    );
+    const types: PokemonTypeModel[] = [];
+
+    json.types.forEach((type: any) => {
+      types.push(PokemonTypeModel.fromJSON(JSON.stringify(type.type)));
+    });
 
     return new PokemonModel(id, name, sprites.front_default, types);
   }
