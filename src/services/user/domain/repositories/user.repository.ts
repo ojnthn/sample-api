@@ -7,5 +7,6 @@ export abstract class UserRepository {
     email: string,
     telefone: string
   ): Promise<number | UserFailure>;
-  abstract read(id: string): Promise<UserModel | UserFailure>;
+  abstract read(id: number): Promise<UserModel | UserFailure>;
+  abstract delete(id: number): Promise<boolean | UserFailure>;
 }

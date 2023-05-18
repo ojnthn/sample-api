@@ -6,6 +6,7 @@ import { UserRepositoryImpl } from "../data/repositories/user.repository.impl";
 import { UserRepository } from "../domain/repositories/user.repository";
 import { CreateUserUsecaseImpl } from "../domain/usecases/create_user/create_user.usecase.impl";
 import { ReadUserUsecaseImpl } from "../domain/usecases/read_user/read_user.usecase.impl";
+import { DeleteUserUsecaseImpl } from "../domain/usecases/delete_user/delete_user.usecase.impl";
 
 export class UserInject {
   private userController: UserController;
@@ -21,7 +22,8 @@ export class UserInject {
 
     this.userController = new UserController(
       new CreateUserUsecaseImpl(userRepository),
-      new ReadUserUsecaseImpl(userRepository)
+      new ReadUserUsecaseImpl(userRepository),
+      new DeleteUserUsecaseImpl(userRepository)
     );
   }
 

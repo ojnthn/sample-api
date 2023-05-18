@@ -17,8 +17,14 @@ export class UserRepositoryImpl implements UserRepository {
     });
   }
 
-  read(id: string): Promise<UserModel | UserFailure> {
+  read(id: number): Promise<UserModel | UserFailure> {
     return this.datasource.read(id).catch((error) => {
+      return new UserFailure(error.message);
+    });
+  }
+
+  delete(id: number): Promise<boolean | UserFailure> {
+    return this.datasource.delete(id).catch((error) => {
       return new UserFailure(error.message);
     });
   }
