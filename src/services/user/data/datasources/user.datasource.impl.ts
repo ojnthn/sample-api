@@ -5,20 +5,15 @@ import { UserDatasource } from "./user.datasource";
 export class UserDatasourceImpl implements UserDatasource {
   constructor(private _database: any) {}
 
-  async create(name: string, email: string, telefone: string): Promise<number> {
+  async create(user: UserModel): Promise<number> {
     // Make the request to the database and create the user
     try {
-      const id: [number] = await this._database
-        .table("usuario")
-        .insert({
-          nome: name,
-          email,
-          telefone,
-        })
-        .returning("id");
+      const id = await this._database.insert(user.toJSON()).into("usuario");
 
       return Promise.resolve(id[0]);
     } catch (error) {
+      console.log(error);
+
       if (error instanceof UserException) {
         throw new UserException(error.message);
       }

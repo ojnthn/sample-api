@@ -8,11 +8,9 @@ export class UserRepositoryImpl implements UserRepository {
   constructor(private datasource: UserDatasource) {}
 
   create(
-    name: string,
-    email: string,
-    telefone: string
+    user: UserModel
   ): Promise<number | UserFailure> {
-    return this.datasource.create(name, email, telefone).catch((error) => {
+    return this.datasource.create(user).catch((error) => {
       return new UserFailure(error.message);
     });
   }

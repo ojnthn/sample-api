@@ -1,9 +1,8 @@
+import { UserModel } from "../../../data/models/user.model";
 import { UserFailure } from "../../../errors/user.failure";
 
 export abstract class CreateUserUsecase {
   abstract execute(
-    name: string,
-    email: string,
-    telefone: string
+    user: UserModel
   ): Promise<number | UserFailure>;
 }

@@ -4,6 +4,7 @@ import { Request, Response } from "express";
 import { ReadUserUsecase } from "../domain/usecases/read_user/read_user.usecase";
 import { Failure } from "../../../core/errors/failure";
 import { DeleteUserUsecase } from "../domain/usecases/delete_user/delete_user.usecase";
+import { UserRepository } from "../domain/repositories/user.repository";
 
 export class UserController {
   constructor(
@@ -15,9 +16,7 @@ export class UserController {
   async createUser(req: Request, res: Response) {
     const user = UserModel.fromJSON(JSON.stringify(req.body));
     const response = await this.create.execute(
-      user.name,
-      user.email,
-      user.telefone
+      UserModel.fromJSON(JSON.stringify(req.body))
     );
 
     if (response instanceof Failure) {

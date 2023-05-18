@@ -19,7 +19,7 @@ export class UserModel extends UserEntity {
 
   public toJSON() {
     return {
-      name: this.name,
+      nome: this.name,
       email: this.email,
       telefone: this.telefone,
     };
