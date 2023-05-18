@@ -7,13 +7,19 @@ import { UserFailure } from "../../errors/user.failure";
 export class UserRepositoryImpl implements UserRepository {
   constructor(private datasource: UserDatasource) {}
 
-  create(name: string, email: string): Promise<number | UserFailure> {
-    return this.datasource.create(name, email).catch((error) => {
+  create(
+    name: string,
+    email: string,
+    telefone: string
+  ): Promise<number | UserFailure> {
+    return this.datasource.create(name, email, telefone).catch((error) => {
       return new UserFailure(error.message);
     });
   }
 
-  read(id: string): Promise<UserModel> {
-    return this.datasource.read(id);
+  read(id: string): Promise<UserModel | UserFailure> {
+    return this.datasource.read(id).catch((error) => {
+      return new UserFailure(error.message);
+    });
   }
 }

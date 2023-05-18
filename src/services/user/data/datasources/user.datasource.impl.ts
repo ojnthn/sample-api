@@ -3,14 +3,21 @@ import { UserModel } from "../models/user.model";
 import { UserDatasource } from "./user.datasource";
 
 export class UserDatasourceImpl implements UserDatasource {
-  constructor() {}
+  constructor(private _database: any) {}
 
-  async create(name: string, email: string): Promise<number> {
+  async create(name: string, email: string, telefone: string): Promise<number> {
     // Make the request to the database and create the user
     try {
-      throw new UserException("Database error");
+      const id: [number] = await this._database
+        .table("usuario")
+        .insert({
+          nome: name,
+          email,
+          telefone,
+        })
+        .returning("id");
 
-      return Promise.resolve(Math.floor(Math.random() * 100));
+      return Promise.resolve(id[0]);
     } catch (error) {
       if (error instanceof UserException) {
         throw new UserException(error.message);
@@ -22,15 +29,30 @@ export class UserDatasourceImpl implements UserDatasource {
 
   async read(id: string): Promise<UserModel> {
     // Make the request to the database and read the user
+    try {
+      const response: [any] = await this._database
+        .table("usuario")
+        .select("id", "nome", "email", "telefone")
+        .where("id", id);
 
-    return Promise.resolve(
-      UserModel.fromJSON(
-        JSON.stringify({
-          id: 1,
-          name: "John Doe",
-          email: "john.doe@mail.com",
-        })
-      )
-    );
+      console.log(id);
+
+      return Promise.resolve(
+        UserModel.fromJSON(
+          JSON.stringify({
+            id: response[0].id,
+            name: response[0].nome,
+            email: response[0].email,
+            telefone: response[0].telefone,
+          })
+        )
+      );
+    } catch (error) {
+      if (error instanceof UserException) {
+        throw new UserException(error.message);
+      }
+
+      throw new UserException("Error reading user");
+    }
   }
 }

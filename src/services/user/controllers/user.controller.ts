@@ -12,19 +12,27 @@ export class UserController {
 
   async createUser(req: Request, res: Response) {
     const user = UserModel.fromJSON(JSON.stringify(req.body));
-    const response = await this.create.execute(user.name, user.email);
+    const response = await this.create.execute(
+      user.name,
+      user.email,
+      user.telefone
+    );
 
     if (response instanceof Failure) {
       return res.status(400).json({ message: response.message });
     }
 
-    res.status(201).json({ message: "User created", userId: response });
+    res.status(201).json({ userId: response });
   }
 
   async readUser(req: Request, res: Response) {
     const userId = req.params.id;
     const user = await this.read.execute(userId);
 
-    res.status(200).json({ user });
+    if (user instanceof Failure) {
+      return res.status(400).json({ message: user.message });
+    }
+
+    res.status(200).json(user.toJSON());
   }
 }

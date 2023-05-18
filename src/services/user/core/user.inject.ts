@@ -1,3 +1,4 @@
+import knex from "knex";
 import { UserController } from "../controllers/user.controller";
 import { UserDatasource } from "../data/datasources/user.datasource";
 import { UserDatasourceImpl } from "../data/datasources/user.datasource.impl";
@@ -9,8 +10,10 @@ import { ReadUserUsecaseImpl } from "../domain/usecases/read_user/read_user.usec
 export class UserInject {
   private userController: UserController;
 
-  constructor() {
-    const userDatasource: UserDatasource = new UserDatasourceImpl();
+  constructor(
+    private database: any
+  ) {
+    const userDatasource: UserDatasource = new UserDatasourceImpl(database);
 
     const userRepository: UserRepository = new UserRepositoryImpl(
       userDatasource
