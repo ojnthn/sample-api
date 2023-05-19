@@ -19,4 +19,12 @@ route.delete("/user/:id", (req, res) => {
   return userController.deleteUser(req, res);
 });
 
+route.put("/user/:id", (req, res) => {
+  return userController.updateUser(req, res);
+});
+
+route.get("/users", (req, res) => {
+  return userController.listUser(req, res);
+});
+
 export { route };

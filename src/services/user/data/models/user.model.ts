@@ -26,7 +26,7 @@ export class UserModel extends UserEntity {
   }
 
   static fromJSON(json: string) {
-    const { name, email, telefone } = JSON.parse(json);
-    return new UserModel(name, email, telefone);
+    const { nome, email, telefone } = JSON.parse(json);
+    return new UserModel(nome, email, telefone);
   }
 }

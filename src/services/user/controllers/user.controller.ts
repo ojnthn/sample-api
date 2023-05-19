@@ -5,12 +5,16 @@ import { ReadUserUsecase } from "../domain/usecases/read_user/read_user.usecase"
 import { Failure } from "../../../core/errors/failure";
 import { DeleteUserUsecase } from "../domain/usecases/delete_user/delete_user.usecase";
 import { UserRepository } from "../domain/repositories/user.repository";
+import { UpdateUserUsecase } from "../domain/usecases/update_user/update_user.usercase";
+import { ListUserUsecase } from "../domain/usecases/list_user/list_user.usercase";
 
 export class UserController {
   constructor(
     private create: CreateUserUsecase,
     private read: ReadUserUsecase,
-    private remove: DeleteUserUsecase
+    private remove: DeleteUserUsecase,
+    private update: UpdateUserUsecase,
+    private list: ListUserUsecase
   ) {}
 
   async createUser(req: Request, res: Response) {
@@ -46,5 +50,25 @@ export class UserController {
     }
 
     res.status(200).json({ message: "User deleted successfully" });
+  }
+
+  async updateUser(req: Request, res: Response) {
+    const user = UserModel.fromJSON(JSON.stringify(req.body));
+    const response = await this.update.execute(parseInt(req.params.id), user);
+
+    if (response instanceof Failure) {
+      return res.status(400).json({ message: response.message });
+    }
+    res.status(200).json({ message: "User updated sucessfully" });
+  }
+
+  async listUser(req: Request, res: Response) {
+    const users = await this.list.execute();
+
+    if (users instanceof Failure) {
+      return res.status(400).json({ message: users.message });
+    }
+
+    res.status(200).json(users);
   }
 }

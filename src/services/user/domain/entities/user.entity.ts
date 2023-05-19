@@ -1,7 +1,7 @@
 export class UserEntity {
-    constructor(
-        public readonly name: string,
-        public readonly email: string,
-        public readonly telefone: string,
-    ) {}
+  constructor(
+    public readonly nome: string,
+    public readonly email: string,
+    public readonly telefone: string
+  ) {}
 }

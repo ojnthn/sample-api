@@ -30,8 +30,6 @@ export class UserDatasourceImpl implements UserDatasource {
         .select("id", "nome", "email", "telefone")
         .where("id", id);
 
-      console.log(id);
-
       return Promise.resolve(
         UserModel.fromJSON(
           JSON.stringify({
@@ -62,6 +60,49 @@ export class UserDatasourceImpl implements UserDatasource {
       }
 
       throw new UserException("Error deleting user");
+    }
+  }
+
+  async update(id: number, usuario: UserModel): Promise<boolean> {
+    try {
+      await this._database
+        .table("usuario")
+        .where("id", id)
+        .update(usuario.toJSON());
+
+      return Promise.resolve(true);
+    } catch (error) {
+      if (error instanceof UserException) {
+        throw new UserException(error.message);
+      }
+      throw new UserException("Error updating user");
+    }
+  }
+
+  async list(): Promise<UserModel[]> {
+    try {
+      const response: [any] = await this._database
+        .table("usuario")
+        .select("id", "nome", "email", "telefone");
+
+      return Promise.resolve(
+        response.map((user) =>
+          UserModel.fromJSON(
+            JSON.stringify({
+              id: user.id,
+              nome: user.nome,
+              email: user.email,
+              telefone: user.telefone,
+            })
+          )
+        )
+      );
+    } catch (error) {
+      if (error instanceof UserException) {
+        throw new UserException(error.message);
+      }
+
+      throw new UserException("Error listing users");
     }
   }
 }
