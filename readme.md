@@ -6,3 +6,5 @@ Datasource (Retorna a model para) -> Repository -> Usecase -> Controller -> Reto
 3. datasource -> data
 4. repository -> domain e data
 5. usecase -> domain
+   6- inject
+   7- router

@@ -1,5 +1,4 @@
 import { UserModel } from "../../../data/models/user.model";
-import { UserRepositoryImpl } from "../../../data/repositories/user.repository.impl";
 import { UserFailure } from "../../../errors/user.failure";
 import { UserRepository } from "../../repositories/user.repository";
 import { CreateUserUsecase } from "./create_user.usecase";

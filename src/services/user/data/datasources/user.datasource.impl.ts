@@ -12,8 +12,6 @@ export class UserDatasourceImpl implements UserDatasource {
 
       return Promise.resolve(id[0]);
     } catch (error) {
-      console.log(error);
-
       if (error instanceof UserException) {
         throw new UserException(error.message);
       }

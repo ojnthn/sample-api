@@ -1,4 +1,3 @@
-import knex from "knex";
 import { UserController } from "../controllers/user.controller";
 import { UserDatasource } from "../data/datasources/user.datasource";
 import { UserDatasourceImpl } from "../data/datasources/user.datasource.impl";

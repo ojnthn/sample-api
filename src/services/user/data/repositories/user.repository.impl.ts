@@ -1,5 +1,4 @@
 import { UserRepository } from "../../domain/repositories/user.repository";
-import { UserException } from "../../errors/user.exception";
 import { UserDatasource } from "../datasources/user.datasource";
 import { UserModel } from "../models/user.model";
 import { UserFailure } from "../../errors/user.failure";

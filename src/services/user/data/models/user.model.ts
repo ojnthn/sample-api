@@ -2,16 +2,18 @@ import { UserEntity } from "../../domain/entities/user.entity";
 
 export class UserModel extends UserEntity {
   constructor(
-    public readonly name: string,
+    public readonly id: number,
+    public readonly nome: string,
     public readonly email: string,
     public readonly telefone: string
   ) {
-    super(name, email, telefone);
+    super(id, nome, email, telefone);
   }
 
   public toString() {
     return JSON.stringify({
-      name: this.name,
+      id: this.id,
+      nome: this.nome,
       email: this.email,
       telefone: this.telefone,
     });
@@ -19,14 +21,15 @@ export class UserModel extends UserEntity {
 
   public toJSON() {
     return {
-      nome: this.name,
+      id: this.id,
+      nome: this.nome,
       email: this.email,
       telefone: this.telefone,
     };
   }
 
   static fromJSON(json: string) {
-    const { nome, email, telefone } = JSON.parse(json);
-    return new UserModel(nome, email, telefone);
+    const { id, nome, email, telefone } = JSON.parse(json);
+    return new UserModel(id, nome, email, telefone);
   }
 }
