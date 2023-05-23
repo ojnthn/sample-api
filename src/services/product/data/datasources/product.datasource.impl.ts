@@ -7,8 +7,10 @@ export class ProductDatasourceImpl implements ProductDatasource {
 
   async create(product: ProductModel): Promise<number> {
     try {
-      const id = await this._database.insert(product.toJSON()).into("produtos");
-
+      const id = await this._database
+        .insert(product.toJSON())
+        .into("produtos")
+        .returning("id");
       return Promise.resolve(id[0]);
     } catch (error) {
       if (error instanceof ProductException) {

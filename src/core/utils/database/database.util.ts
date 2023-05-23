@@ -1,13 +1,13 @@
 import knex from "knex";
 
 const database = knex({
-  client: "mysql",
+  client: "pg",
   connection: {
     host: "127.0.0.1",
-    port: 3306,
+    port: 5432,
     user: "root",
     password: "root",
-    database: "sistema",
+    database: "sampleApi",
   },
 });
 

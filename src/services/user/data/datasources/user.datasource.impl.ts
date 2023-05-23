@@ -8,7 +8,10 @@ export class UserDatasourceImpl implements UserDatasource {
   async create(user: UserModel): Promise<number> {
     // Make the request to the database and create the user
     try {
-      const id = await this._database.insert(user.toJSON()).into("usuario");
+      const id = await this._database
+        .insert(user.toJSON())
+        .into("usuarios")
+        .returning("id");
 
       return Promise.resolve(id[0]);
     } catch (error) {
@@ -24,7 +27,7 @@ export class UserDatasourceImpl implements UserDatasource {
     // Make the request to the database and read the user
     try {
       const response: [any] = await this._database
-        .table("usuario")
+        .table("usuarios")
         .select("id", "nome", "email", "telefone")
         .where("id", id);
 
@@ -49,7 +52,7 @@ export class UserDatasourceImpl implements UserDatasource {
 
   async delete(id: number): Promise<boolean> {
     try {
-      await this._database.table("usuario").where("id", id).del();
+      await this._database.table("usuarios").where("id", id).del();
 
       return Promise.resolve(true);
     } catch (error) {
@@ -64,7 +67,7 @@ export class UserDatasourceImpl implements UserDatasource {
   async update(id: number, usuario: UserModel): Promise<boolean> {
     try {
       await this._database
-        .table("usuario")
+        .table("usuarios")
         .where("id", id)
         .update(usuario.toJSON());
 
@@ -80,7 +83,7 @@ export class UserDatasourceImpl implements UserDatasource {
   async list(): Promise<UserModel[]> {
     try {
       const response: [any] = await this._database
-        .table("usuario")
+        .table("usuarios")
         .select("id", "nome", "email", "telefone");
 
       return Promise.resolve(
