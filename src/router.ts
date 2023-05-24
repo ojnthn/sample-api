@@ -1,5 +1,9 @@
 import { Router } from "express";
-import { userController, productController } from "./core/inject/inject";
+import {
+  userController,
+  productController,
+  userCategoryController,
+} from "./core/inject/inject";
 
 const route = Router();
 
@@ -36,6 +40,22 @@ route.put("/product/:id", (req, res) => {
 });
 route.get("/products", (req, res) => {
   return productController.listProduct(req, res);
+});
+
+route.post("/userCategory", (req, res) => {
+  return userCategoryController.createUserCategory(req, res);
+});
+route.get("/userCategory/:id", (req, res) => {
+  return userCategoryController.readUserCategory(req, res);
+});
+route.delete("/userCategory/:id", (req, res) => {
+  return userCategoryController.deleteUserCategory(req, res);
+});
+route.put("/userCategory/:id", (req, res) => {
+  return userCategoryController.updateUserCategory(req, res);
+});
+route.get("/userCategories", (req, res) => {
+  return userCategoryController.listUserCategory(req, res);
 });
 
 export { route };

@@ -4,7 +4,6 @@ import { Request, Response } from "express";
 import { ReadUserUsecase } from "../domain/usecases/read_user/read_user.usecase";
 import { Failure } from "../../../core/errors/failure";
 import { DeleteUserUsecase } from "../domain/usecases/delete_user/delete_user.usecase";
-import { UserRepository } from "../domain/repositories/user.repository";
 import { UpdateUserUsecase } from "../domain/usecases/update_user/update_user.usercase";
 import { ListUserUsecase } from "../domain/usecases/list_user/list_user.usercase";
 
@@ -19,6 +18,11 @@ export class UserController {
 
   async createUser(req: Request, res: Response) {
     const user = UserModel.fromJSON(JSON.stringify(req.body));
+
+    if (!user.name) {
+      return res.status(400).json({ Error: "Name is required" });
+    }
+
     const response = await this.create.execute(
       UserModel.fromJSON(JSON.stringify(req.body))
     );
@@ -54,6 +58,7 @@ export class UserController {
 
   async updateUser(req: Request, res: Response) {
     const user = UserModel.fromJSON(JSON.stringify(req.body));
+
     const response = await this.update.execute(parseInt(req.params.id), user);
 
     if (response instanceof Failure) {
