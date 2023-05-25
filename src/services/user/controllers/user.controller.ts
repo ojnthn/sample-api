@@ -7,13 +7,16 @@ import { DeleteUserUsecase } from "../domain/usecases/delete_user/delete_user.us
 import { UpdateUserUsecase } from "../domain/usecases/update_user/update_user.usercase";
 import { ListUserUsecase } from "../domain/usecases/list_user/list_user.usercase";
 
+import { FindByEmailUserUsecase } from "../domain/usecases/findByEmail_user/findByEmail_user.usecase";
+
 export class UserController {
   constructor(
     private create: CreateUserUsecase,
     private read: ReadUserUsecase,
     private remove: DeleteUserUsecase,
     private update: UpdateUserUsecase,
-    private list: ListUserUsecase
+    private list: ListUserUsecase,
+    private findByEmail: FindByEmailUserUsecase
   ) {}
 
   async createUser(req: Request, res: Response) {
@@ -21,6 +24,14 @@ export class UserController {
 
     if (!user.name) {
       return res.status(400).json({ Error: "Name is required" });
+    }
+
+    if (user.email) {
+      const contactExists = await this.findByEmail.execute(user.email);
+
+      if (contactExists) {
+        return res.status(400).json({ error: "This e-mail is already in use" });
+      }
     }
 
     const response = await this.create.execute(

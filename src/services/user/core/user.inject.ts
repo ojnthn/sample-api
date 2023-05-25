@@ -8,6 +8,11 @@ import { ReadUserUsecaseImpl } from "../domain/usecases/read_user/read_user.usec
 import { DeleteUserUsecaseImpl } from "../domain/usecases/delete_user/delete_user.usecase.impl";
 import { UpdateUserUsecaseImpl } from "../domain/usecases/update_user/update_user.usecase.impl";
 import { ListUserUsecaseImpl } from "../domain/usecases/list_user/list_user.usercase.impl";
+import { FindByEmailUserUsecaseImpl } from "../domain/usecases/findByEmail_user/findByEmail_user.usecase.impl";
+import { FindByEmailDatasource } from "../data/datasources/findByEmail_user/findByEmail.datasource";
+import { FindByEmailDatasourceImpl } from "../data/datasources/findByEmail_user/findByEmail.datasource.impl";
+import { FindByEmailRepository } from "../domain/repositories/findByEmail/findByEmail.repository";
+import { FindByEmailRepositoryImpl } from "../data/repositories/findByEmail/findByEmail.repository.impl";
 
 export class UserInject {
   private userController: UserController;
@@ -19,12 +24,18 @@ export class UserInject {
       userDatasource
     );
 
+    const findByEmailDatasource: FindByEmailDatasource =
+      new FindByEmailDatasourceImpl(database);
+    const findByEmailRepository: FindByEmailRepository =
+      new FindByEmailRepositoryImpl(findByEmailDatasource);
+
     this.userController = new UserController(
       new CreateUserUsecaseImpl(userRepository),
       new ReadUserUsecaseImpl(userRepository),
       new DeleteUserUsecaseImpl(userRepository),
       new UpdateUserUsecaseImpl(userRepository),
-      new ListUserUsecaseImpl(userRepository)
+      new ListUserUsecaseImpl(userRepository),
+      new FindByEmailUserUsecaseImpl(findByEmailRepository)
     );
   }
 
