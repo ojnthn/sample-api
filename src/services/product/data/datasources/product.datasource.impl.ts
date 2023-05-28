@@ -9,7 +9,7 @@ export class ProductDatasourceImpl implements ProductDatasource {
     try {
       const id = await this._database
         .insert(product.toJSON())
-        .into("produtos")
+        .into("products")
         .returning("id");
       return Promise.resolve(id[0]);
     } catch (error) {
@@ -17,23 +17,25 @@ export class ProductDatasourceImpl implements ProductDatasource {
         throw new ProductException(error.message);
       }
 
-      throw new ProductException("Error creating product");
+      throw new ProductException("Erro ao criar produto.");
     }
   }
 
   async read(id: number): Promise<ProductModel> {
     try {
       const response: [any] = await this._database
-        .table("produtos")
-        .select("id", "descricao", "valor")
+        .table("products")
+        .select("id", "name", "price", "situation", "category_id")
         .where("id", id);
 
       return Promise.resolve(
         ProductModel.fromJSON(
           JSON.stringify({
             id: response[0].id,
-            descricao: response[0].descricao,
-            valor: response[0].valor,
+            name: response[0].name,
+            price: response[0].price,
+            situation: response[0].situation,
+            category_id: response[0].category_id,
           })
         )
       );
@@ -42,13 +44,13 @@ export class ProductDatasourceImpl implements ProductDatasource {
         throw new ProductException(error.message);
       }
 
-      throw new ProductException("Error reading product");
+      throw new ProductException("Erro ao buscar produto.");
     }
   }
 
   async delete(id: number): Promise<boolean> {
     try {
-      await this._database.table("produtos").where("id", id).del();
+      await this._database.table("products").where("id", id).del();
 
       return Promise.resolve(true);
     } catch (error) {
@@ -56,14 +58,14 @@ export class ProductDatasourceImpl implements ProductDatasource {
         throw new ProductException(error.message);
       }
 
-      throw new ProductException("Error deleting product");
+      throw new ProductException("Erro ao deletar produto.");
     }
   }
 
   async update(id: number, product: ProductModel): Promise<boolean> {
     try {
       await this._database
-        .table("produtos")
+        .table("products")
         .where("id", id)
         .update(product.toJSON());
 
@@ -72,34 +74,35 @@ export class ProductDatasourceImpl implements ProductDatasource {
       if (error instanceof ProductException) {
         throw new ProductException(error.message);
       }
-      throw new ProductException("Error updating product");
+      throw new ProductException("Erro ao atualizar produto.");
     }
   }
 
   async list(): Promise<ProductModel[]> {
     try {
       const response: [any] = await this._database
-        .table("produtos")
-        .select("id", "descricao", "valor");
+        .table("products")
+        .select("id", "name", "price", "situation", "category_id");
 
       return Promise.resolve(
         response.map((product) =>
           ProductModel.fromJSON(
             JSON.stringify({
               id: product.id,
-              descricao: product.descricao,
-              valor: product.valor,
+              name: product.name,
+              price: product.price,
+              situation: product.situation,
+              category_id: product.category_id,
             })
           )
         )
       );
     } catch (error) {
-      console.log(error);
-      // if (error instanceof ProductException) {
-      //   throw new ProductException(error.message);
-      // }
+      if (error instanceof ProductException) {
+        throw new ProductException(error.message);
+      }
 
-      throw new ProductException("Error creating product");
+      throw new ProductException("Erro ao listar produtos.");
     }
   }
 }

@@ -1,5 +1,5 @@
 import { UserFailure } from "../../../errors/user.failure";
-import { UserRepository } from "../../repositories/user.repository";
+import { UserRepository } from "../../repositories/user/user.repository";
 import { DeleteUserUsecase } from "./delete_user.usecase";
 
 export class DeleteUserUsecaseImpl implements DeleteUserUsecase {

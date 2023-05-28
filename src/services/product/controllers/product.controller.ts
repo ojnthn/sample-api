@@ -48,7 +48,7 @@ export class ProductController {
       return res.status(400).json({ message: response.message });
     }
 
-    res.status(200).json({ message: "Product deleted successfully" });
+    res.status(200).json({ message: "Produto deletado com sucesso." });
   }
 
   async updateProduct(req: Request, res: Response) {
@@ -62,7 +62,7 @@ export class ProductController {
       return res.status(400).json({ message: response.message });
     }
 
-    res.status(200).json({ message: "Product updated successfully" });
+    res.status(200).json({ message: "Produto atualizado com sucesso." });
   }
 
   async listProduct(req: Request, res: Response) {

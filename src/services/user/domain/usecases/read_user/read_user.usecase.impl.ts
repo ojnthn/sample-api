@@ -1,6 +1,6 @@
 import { UserModel } from "../../../data/models/user.model";
 import { UserFailure } from "../../../errors/user.failure";
-import { UserRepository } from "../../repositories/user.repository";
+import { UserRepository } from "../../repositories/user/user.repository";
 import { ReadUserUsecase } from "./read_user.usecase";
 
 export class ReadUserUsecaseImpl implements ReadUserUsecase {

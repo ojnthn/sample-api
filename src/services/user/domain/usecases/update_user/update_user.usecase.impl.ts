@@ -1,5 +1,5 @@
 import { UpdateUserUsecase } from "./update_user.usercase";
-import { UserRepository } from "../../repositories/user.repository";
+import { UserRepository } from "../../repositories/user/user.repository";
 import { UserModel } from "../../../data/models/user.model";
 import { UserFailure } from "../../../errors/user.failure";
 

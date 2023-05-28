@@ -7,7 +7,7 @@ import { DeleteUserUsecase } from "../domain/usecases/delete_user/delete_user.us
 import { UpdateUserUsecase } from "../domain/usecases/update_user/update_user.usercase";
 import { ListUserUsecase } from "../domain/usecases/list_user/list_user.usercase";
 
-import { FindByEmailUserUsecase } from "../domain/usecases/findByEmail_user/findByEmail_user.usecase";
+import { FindByUserEmailUsecase } from "../domain/usecases/find_by_user_email/find_by_user_email.usecase";
 
 export class UserController {
   constructor(
@@ -16,21 +16,23 @@ export class UserController {
     private remove: DeleteUserUsecase,
     private update: UpdateUserUsecase,
     private list: ListUserUsecase,
-    private findByEmail: FindByEmailUserUsecase
+    private findByEmail: FindByUserEmailUsecase
   ) {}
 
   async createUser(req: Request, res: Response) {
     const user = UserModel.fromJSON(JSON.stringify(req.body));
 
     if (!user.name) {
-      return res.status(400).json({ Error: "Name is required" });
+      return res
+        .status(400)
+        .json({ Error: "O nome do usuário é obrigatório." });
     }
 
     if (user.email) {
       const contactExists = await this.findByEmail.execute(user.email);
 
       if (contactExists) {
-        return res.status(400).json({ error: "This e-mail is already in use" });
+        return res.status(400).json({ error: "O e-mail já está em uso." });
       }
     }
 
@@ -64,18 +66,27 @@ export class UserController {
       return res.status(400).json({ message: response.message });
     }
 
-    res.status(200).json({ message: "User deleted successfully" });
+    res.status(200).json({ message: "Usuário deletado com sucesso." });
   }
 
   async updateUser(req: Request, res: Response) {
     const user = UserModel.fromJSON(JSON.stringify(req.body));
+    const userId = parseInt(req.params.id);
+
+    if (user.email) {
+      const contactByEmail = await this.findByEmail.execute(user.email);
+
+      if (contactByEmail && contactByEmail.id !== userId) {
+        return res.status(400).json({ error: "O e-mail já está em uso." });
+      }
+    }
 
     const response = await this.update.execute(parseInt(req.params.id), user);
 
     if (response instanceof Failure) {
       return res.status(400).json({ message: response.message });
     }
-    res.status(200).json({ message: "User updated sucessfully" });
+    res.status(200).json({ message: "Usuário atualizado com sucesso." });
   }
 
   async listUser(req: Request, res: Response) {
