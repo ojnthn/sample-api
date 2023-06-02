@@ -13,6 +13,8 @@ import { FindByUserEmailDatasource } from "../data/datasources/find_by_user_emai
 import { FindByUserEmailDatasourceImpl } from "../data/datasources/find_by_user_email/find_by_user_email.datasource.impl";
 import { FindByUserEmailRepository } from "../domain/repositories/find_by_user_email/find_by_user_email.repository";
 import { FindByUserEmailRepositoryImpl } from "../data/repositories/find_by_user_email/find_by_user_email.repository.impl";
+import { ValidateUserUsecase } from "../domain/usecases/validate_user/validate_user.usecase";
+import { ValidateUserUsecaseImpl } from "../domain/usecases/validate_user/validate_user.usecase.impl";
 
 export class UserInject {
   private userController: UserController;
@@ -29,13 +31,17 @@ export class UserInject {
     const findByUserEmailRepository: FindByUserEmailRepository =
       new FindByUserEmailRepositoryImpl(findByUserEmailDatasource);
 
+    const findUserEmailUsecase: FindByUserEmailUsecaseImpl =
+      new FindByUserEmailUsecaseImpl(findByUserEmailRepository);
+
     this.userController = new UserController(
       new CreateUserUsecaseImpl(userRepository),
       new ReadUserUsecaseImpl(userRepository),
       new DeleteUserUsecaseImpl(userRepository),
       new UpdateUserUsecaseImpl(userRepository),
       new ListUserUsecaseImpl(userRepository),
-      new FindByUserEmailUsecaseImpl(findByUserEmailRepository)
+      findUserEmailUsecase,
+      new ValidateUserUsecaseImpl(findUserEmailUsecase)
     );
   }
 
