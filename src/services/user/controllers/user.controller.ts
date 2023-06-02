@@ -8,6 +8,7 @@ import { UpdateUserUsecase } from "../domain/usecases/update_user/update_user.us
 import { ListUserUsecase } from "../domain/usecases/list_user/list_user.usercase";
 
 import { FindByUserEmailUsecase } from "../domain/usecases/find_by_user_email/find_by_user_email.usecase";
+import { ValidateUserUsecase } from "../domain/usecases/validate_user/validate_user.usecase";
 
 export class UserController {
   constructor(
@@ -16,24 +17,45 @@ export class UserController {
     private remove: DeleteUserUsecase,
     private update: UpdateUserUsecase,
     private list: ListUserUsecase,
-    private findByEmail: FindByUserEmailUsecase
+    private findByEmail: FindByUserEmailUsecase,
+    private validate: ValidateUserUsecase
   ) {}
 
   async createUser(req: Request, res: Response) {
     const user = UserModel.fromJSON(JSON.stringify(req.body));
 
+    /**
+     * @todo Está parte de validação de dados poderia ser feita atráves de uma lib/package de validação
+     * validando o tipo de dado e se é obrigatório ou não.
+     * Eu gostaria que você fizesse na mão mesmo pra exercitar a tua lógica e pra tu ver como funciona
+     * mas se tu quiser usar uma lib/package de validação, fique a vontade.
+     *
+     * Futuramente está validação será removida daqui e passada para um middleware, mas não
+     * se preocupe com isso agora.
+     *
+     * A mesma coisa deverá ser implementada em outros metodos dessa classe.
+     */
     if (!user.name) {
       return res
         .status(400)
         .json({ Error: "O nome do usuário é obrigatório." });
     }
 
-    if (user.email) {
-      const contactExists = await this.findByEmail.execute(user.email);
+    /**
+     * Explicando o por que da remoção da validação do usuario daqui:
+     * sempre deve deixar o mais quebrado possível, e funções devem ter responsabilidades unicas,
+     * e regras de negócio não devem ficar aqui, futuramente pode haver mais validações de usuário
+     * como idade do usuário ou validação do telefone dele, e isso não deve ficar aqui, deve ficar
+     * em um lugar especifico para isso, dai que entra o usecase de validação de usuário.
+     *
+     * Usecases são responsaveis por implementar regras de negócio, e não o controller.
+     *
+     * A mesma coisa deverá ser implementada em outros metodos dessa classe.
+     */
+    const validUser = await this.validate.execute(user);
 
-      if (contactExists) {
-        return res.status(400).json({ error: "O e-mail já está em uso." });
-      }
+    if (validUser) {
+      return res.status(400).json({ error: "O e-mail já está em uso." });
     }
 
     const response = await this.create.execute(
