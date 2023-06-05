@@ -6,9 +6,9 @@ import { Failure } from "../../../core/errors/failure";
 import { DeleteUserUsecase } from "../domain/usecases/delete_user/delete_user.usecase";
 import { UpdateUserUsecase } from "../domain/usecases/update_user/update_user.usercase";
 import { ListUserUsecase } from "../domain/usecases/list_user/list_user.usercase";
-
 import { FindByUserEmailUsecase } from "../domain/usecases/find_by_user_email/find_by_user_email.usecase";
 import { ValidateUserUsecase } from "../domain/usecases/validate_user/validate_user.usecase";
+import { UserSelectModel } from "../data/models/user_select.model";
 
 export class UserController {
   constructor(
@@ -71,7 +71,7 @@ export class UserController {
 
   async readUser(req: Request, res: Response) {
     const userId = req.params.id;
-    const user = await this.read.execute(parseInt(userId));
+    const user = await this.read.execute(new UserSelectModel(parseInt(userId)));
 
     if (user instanceof Failure) {
       return res.status(400).json({ message: user.message });
@@ -98,8 +98,12 @@ export class UserController {
     if (user.email) {
       const contactByEmail = await this.findByEmail.execute(user.email);
 
-      if (contactByEmail && contactByEmail.id !== userId) {
-        return res.status(400).json({ error: "O e-mail já está em uso." });
+      if (contactByEmail instanceof Failure) {
+        return res.status(400).json({ message: contactByEmail.message });
+      }
+
+      if (contactByEmail.id !== userId) {
+        return res.status(400).json({ message: "O e-mail já está em uso." });
       }
     }
 

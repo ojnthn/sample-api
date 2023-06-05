@@ -1,5 +1,6 @@
 import { UserException } from "../../../errors/user.exception";
 import { UserModel } from "../../models/user.model";
+import { UserSelectModel } from "../../models/user_select.model";
 import { UserDatasource } from "./user.datasource";
 
 export class UserDatasourceImpl implements UserDatasource {
@@ -23,13 +24,13 @@ export class UserDatasourceImpl implements UserDatasource {
     }
   }
 
-  async read(id: number): Promise<UserModel> {
+  async read(select: UserSelectModel): Promise<UserModel> {
     // Make the request to the database and read the user
     try {
       const response: [any] = await this._database
         .table("users")
         .select("id", "name", "category_id", "email", "phone", "situation")
-        .where("id", id);
+        .where(select.toJson());
 
       return Promise.resolve(
         UserModel.fromJSON(

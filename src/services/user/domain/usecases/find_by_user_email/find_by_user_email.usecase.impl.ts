@@ -1,14 +1,17 @@
+import { UserModel } from "../../../data/models/user.model";
+import { UserSelectModel } from "../../../data/models/user_select.model";
 import { UserFailure } from "../../../errors/user.failure";
-import { FindByUserEmailRepository } from "../../repositories/find_by_user_email/find_by_user_email.repository";
+import { UserRepository } from "../../repositories/user/user.repository";
 import { FindByUserEmailUsecase } from "./find_by_user_email.usecase";
 
 export class FindByUserEmailUsecaseImpl implements FindByUserEmailUsecase {
-  constructor(private findByEmailRepository: FindByUserEmailRepository) {}
+  constructor(private user: UserRepository) {}
 
-  async execute(email: string): Promise<string | UserFailure> {
-    const contactExists = await this.findByEmailRepository.FindByUserEmail(
-      email
+  async execute(email: string): Promise<UserModel | UserFailure> {
+    const contactExists = await this.user.read(
+      new UserSelectModel(null, email)
     );
+
     return contactExists;
   }
 }

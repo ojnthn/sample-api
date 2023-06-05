@@ -2,6 +2,7 @@ import { UserRepository } from "../../../domain/repositories/user/user.repositor
 import { UserDatasource } from "../../datasources/user/user.datasource";
 import { UserModel } from "../../models/user.model";
 import { UserFailure } from "../../../errors/user.failure";
+import { UserSelectModel } from "../../models/user_select.model";
 
 export class UserRepositoryImpl implements UserRepository {
   constructor(private datasource: UserDatasource) {}
@@ -12,8 +13,8 @@ export class UserRepositoryImpl implements UserRepository {
     });
   }
 
-  read(id: number): Promise<UserModel | UserFailure> {
-    return this.datasource.read(id).catch((error) => {
+  read(select: UserSelectModel): Promise<UserModel | UserFailure> {
+    return this.datasource.read(select).catch((error) => {
       return new UserFailure(error.message);
     });
   }
