@@ -70,8 +70,13 @@ export class UserController {
   }
 
   async readUser(req: Request, res: Response) {
-    const userId = req.params.id;
-    const user = await this.read.execute(new UserSelectModel(parseInt(userId)));
+    const userId: number = parseInt(req.params.id);
+
+    if (isNaN(userId)) {
+      return res.status(400).json({ message: "Informe um id válido" });
+    }
+
+    const user = await this.read.execute(new UserSelectModel(userId));
 
     if (user instanceof Failure) {
       return res.status(400).json({ message: user.message });
