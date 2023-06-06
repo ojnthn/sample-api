@@ -8,10 +8,6 @@ export class FindByUserEmailUsecaseImpl implements FindByUserEmailUsecase {
   constructor(private user: UserRepository) {}
 
   async execute(email: string): Promise<UserModel | UserFailure> {
-    return await this.user
-      .read(new UserSelectModel(null, email))
-      .catch((error) => {
-        return new UserFailure(error.message);
-      });
+    return await this.user.read(new UserSelectModel(null, email));
   }
 }
