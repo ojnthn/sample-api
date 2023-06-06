@@ -11,7 +11,7 @@ export class UserDatasourceImpl implements UserDatasource {
     try {
       const id = await this._database
         .insert(user.toJSON())
-        .into("users")
+        .into("usuario")
         .returning("id");
 
       return Promise.resolve(id[0]);
@@ -28,22 +28,11 @@ export class UserDatasourceImpl implements UserDatasource {
     // Make the request to the database and read the user
     try {
       const response: [any] = await this._database
-        .table("users")
-        .select("id", "name", "category_id", "email", "phone", "situation")
+        .table("usuario")
+        .select("id", "nome", "email", "telefone", "situacao")
         .where(userSelect.toJson());
 
-      return Promise.resolve(
-        UserModel.fromJSON(
-          JSON.stringify({
-            id: response[0].id,
-            name: response[0].name,
-            category_id: response[0].category_id,
-            email: response[0].email,
-            phone: response[0].phone,
-            situation: response[0].situation,
-          })
-        )
-      );
+      return Promise.resolve(UserModel.fromJSON(JSON.stringify(response[0])));
     } catch (error) {
       if (error instanceof UserException) {
         throw new UserException(error.message);
@@ -69,7 +58,10 @@ export class UserDatasourceImpl implements UserDatasource {
 
   async update(id: number, user: UserModel): Promise<boolean> {
     try {
-      await this._database.table("users").where("id", id).update(user.toJSON());
+      await this._database
+        .table("usuario")
+        .where("id", id)
+        .update(user.toJSON());
 
       return Promise.resolve(true);
     } catch (error) {
@@ -83,23 +75,12 @@ export class UserDatasourceImpl implements UserDatasource {
   async list(): Promise<UserModel[]> {
     try {
       const response: [any] = await this._database
-        .table("users")
-        .select("id", "name", "category_id", "email", "phone", "situation")
+        .table("usuario")
+        .select("id", "nome", "email", "telefone", "situacao")
         .orderBy("id");
 
       return Promise.resolve(
-        response.map((user) =>
-          UserModel.fromJSON(
-            JSON.stringify({
-              id: user.id,
-              name: user.name,
-              category_id: user.category_id,
-              email: user.email,
-              phone: user.phone,
-              situation: user.situation,
-            })
-          )
-        )
+        response.map((user) => UserModel.fromJSON(JSON.stringify(user)))
       );
     } catch (error) {
       if (error instanceof UserException) {

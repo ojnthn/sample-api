@@ -5,10 +5,9 @@ export class ProductModel extends ProductEntity {
     public readonly id: number,
     public readonly name: string,
     public readonly price: number,
-    public readonly situation: string,
-    public readonly category_id: number
+    public readonly situation: string
   ) {
-    super(id, name, price, situation, category_id);
+    super(id, name, price, situation);
   }
 
   public toString() {
@@ -17,22 +16,20 @@ export class ProductModel extends ProductEntity {
       name: this.name,
       price: this.price,
       situation: this.situation,
-      category_id: this.category_id,
     });
   }
 
   public toJSON() {
     return {
       id: this.id,
-      name: this.name,
-      price: this.price,
-      situation: this.situation,
-      category_id: this.category_id,
+      nome: this.name,
+      preco: this.price,
+      situacao: this.situation,
     };
   }
 
   static fromJSON(json: string) {
-    const { id, name, price, situation, category_id } = JSON.parse(json);
-    return new ProductModel(id, name, price, situation, category_id);
+    const { id, nome, preco, situacao } = JSON.parse(json);
+    return new ProductModel(id, nome, preco, situacao);
   }
 }

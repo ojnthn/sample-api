@@ -4,19 +4,17 @@ export class UserModel extends UserEntity {
   constructor(
     public readonly id: number,
     public readonly name: string,
-    public readonly category_id: number,
     public readonly email: string,
     public readonly phone: string,
     public readonly situation: string
   ) {
-    super(id, name, category_id, email, phone, situation);
+    super(id, name, email, phone, situation);
   }
 
   public toString() {
     return JSON.stringify({
       id: this.id,
       name: this.name,
-      category_id: this.category_id,
       email: this.email,
       phone: this.phone,
       situation: this.situation,
@@ -26,16 +24,15 @@ export class UserModel extends UserEntity {
   public toJSON() {
     return {
       id: this.id,
-      name: this.name,
-      category_id: this.category_id,
+      nome: this.name,
       email: this.email,
-      phone: this.phone,
-      situation: this.situation,
+      telefone: this.phone,
+      situacao: this.situation ?? "Ativo",
     };
   }
 
   static fromJSON(json: string) {
-    const { id, name, category_id, email, phone, situation } = JSON.parse(json);
-    return new UserModel(id, name, category_id, email, phone, situation);
+    const { id, nome, email, telefone, situacao } = JSON.parse(json);
+    return new UserModel(id, nome, email, telefone, situacao);
   }
 }

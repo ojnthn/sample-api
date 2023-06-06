@@ -1,7 +1,9 @@
-POST http://localhost:3001/user HTTP/1.1
+POST http://localhost:3001/usuario HTTP/1.1
 Content-Type: application/json
 
 {
-    "name": "John Doe",
-    "email": "john.doe@mail.com"
+    "nome": "John Doe",
+    "email": "john.doe@mail.com",
+    "telefone": "(47) 99722-6634",
+    "situacao": "Ativo"
 }

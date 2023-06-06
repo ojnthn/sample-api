@@ -8,11 +8,11 @@ export class UserSelectModel extends UserSelectEntity {
   toJson(): object {
     var obj: object = {};
 
-    if (this.id !== null && this.id !== undefined) {
+    if (this.id) {
       obj = { ...obj, id: this.id };
     }
 
-    if (this.email !== null && this.email !== undefined) {
+    if (this.email) {
       obj = { ...obj, email: this.email };
     }
 

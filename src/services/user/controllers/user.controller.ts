@@ -66,7 +66,7 @@ export class UserController {
       return res.status(400).json({ message: response.message });
     }
 
-    return res.status(201).json({ userId: response });
+    return res.status(201).json({ usuario_id: response });
   }
 
   async readUser(req: Request, res: Response) {

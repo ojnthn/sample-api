@@ -1,9 +1,8 @@
-POST http://localhost:3001/product HTTP/1.1
+PUT http://localhost:3001/produto/1 HTTP/1.1
 Content-Type: application/json
 
 {
-    "name": "Coca-cola", 
-    "price": 5.99, 
-    "situation": 1, 
-    "category_id": 1 
+    "nome": "Coca-cola", 
+    "preco": 5.99, 
+    "situacao": "Ativo" 
 }

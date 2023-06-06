@@ -5,15 +5,17 @@ import { userController } from "../../inject/inject";
 const userRoute = Router();
 
 userRoute
-  .route("/user")
+  .route("/usuario")
   .post((req, res) => userController.createUser(req, res));
 
 userRoute
-  .route("/user/:id")
+  .route("/usuario/:id")
   .delete((req, res) => userController.deleteUser(req, res))
   .put((req, res) => userController.updateUser(req, res))
   .get((req, res) => userController.readUser(req, res));
 
-userRoute.route("/users").get((req, res) => userController.listUser(req, res));
+userRoute
+  .route("/usuarios")
+  .get((req, res) => userController.listUser(req, res));
 
 export default userRoute;
