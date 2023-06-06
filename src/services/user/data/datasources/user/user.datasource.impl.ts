@@ -24,13 +24,13 @@ export class UserDatasourceImpl implements UserDatasource {
     }
   }
 
-  async read(select: UserSelectModel): Promise<UserModel> {
+  async read(userSelect: UserSelectModel): Promise<UserModel> {
     // Make the request to the database and read the user
     try {
       const response: [any] = await this._database
         .table("users")
         .select("id", "name", "category_id", "email", "phone", "situation")
-        .where(select.toJson());
+        .where(userSelect.toJson());
 
       return Promise.resolve(
         UserModel.fromJSON(

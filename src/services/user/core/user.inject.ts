@@ -9,10 +9,6 @@ import { DeleteUserUsecaseImpl } from "../domain/usecases/delete_user/delete_use
 import { UpdateUserUsecaseImpl } from "../domain/usecases/update_user/update_user.usecase.impl";
 import { ListUserUsecaseImpl } from "../domain/usecases/list_user/list_user.usercase.impl";
 import { FindByUserEmailUsecaseImpl } from "../domain/usecases/find_by_user_email/find_by_user_email.usecase.impl";
-import { FindByUserEmailDatasource } from "../data/datasources/find_by_user_email/find_by_user_email.datasource";
-import { FindByUserEmailDatasourceImpl } from "../data/datasources/find_by_user_email/find_by_user_email.datasource.impl";
-import { FindByUserEmailRepository } from "../domain/repositories/find_by_user_email/find_by_user_email.repository";
-import { FindByUserEmailRepositoryImpl } from "../data/repositories/find_by_user_email/find_by_user_email.repository.impl";
 import { ValidateUserUsecase } from "../domain/usecases/validate_user/validate_user.usecase";
 import { ValidateUserUsecaseImpl } from "../domain/usecases/validate_user/validate_user.usecase.impl";
 
@@ -26,13 +22,8 @@ export class UserInject {
       userDatasource
     );
 
-    const findByUserEmailDatasource: FindByUserEmailDatasource =
-      new FindByUserEmailDatasourceImpl(database);
-    const findByUserEmailRepository: FindByUserEmailRepository =
-      new FindByUserEmailRepositoryImpl(findByUserEmailDatasource);
-
     const findUserEmailUsecase: FindByUserEmailUsecaseImpl =
-      new FindByUserEmailUsecaseImpl(findByUserEmailRepository);
+      new FindByUserEmailUsecaseImpl(userRepository);
 
     this.userController = new UserController(
       new CreateUserUsecaseImpl(userRepository),

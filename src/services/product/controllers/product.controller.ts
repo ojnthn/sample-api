@@ -17,7 +17,6 @@ export class ProductController {
   ) {}
 
   async createProduct(req: Request, res: Response) {
-    const product = ProductModel.fromJSON(JSON.stringify(req.body));
     const response = await this.create.execute(
       ProductModel.fromJSON(JSON.stringify(req.body))
     );

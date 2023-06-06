@@ -10,6 +10,13 @@ export class ValidateUserUsecaseImpl implements ValidateUserUsecase {
      * Atualmente este método está apenas verificando se o e-mail já existe no banco de dados
      * mas futuramente ele pode implementar outra regra de négocio relacionado a validação.
      */
-    return await this.findByEmail.execute(user.email);
+
+    const userFound = await this.findByEmail.execute(user.email);
+
+    if (userFound instanceof UserModel) {
+      return true;
+    }
+
+    return false;
   }
 }
